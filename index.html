@@ -1,0 +1,1520 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="theme-color" content="#4A90E2">
+    <title>RADAR DE PREFEITURAS 1.0</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        body {
+            background: linear-gradient(135deg, #89CFF0 0%, #4A90E2 100%);
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            min-height: 100vh;
+            padding: 10px;
+            overflow-x: hidden;
+        }
+
+        @media screen and (min-width: 768px) {
+            body {
+                padding: 20px;
+            }
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 15px;
+            padding: 20px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            width: 100%;
+        }
+
+        @media screen and (min-width: 768px) {
+            .container {
+                padding: 30px;
+            }
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 25px;
+            padding-bottom: 15px;
+            border-bottom: 3px solid #4A90E2;
+        }
+
+        @media screen and (min-width: 768px) {
+            .header {
+                margin-bottom: 30px;
+                padding-bottom: 20px;
+            }
+        }
+
+        h1 {
+            color: #2c3e50;
+            font-size: 1.5em;
+            margin-bottom: 8px;
+            line-height: 1.3;
+            word-break: break-word;
+        }
+
+        @media screen and (min-width: 480px) {
+            h1 {
+                font-size: 2em;
+            }
+        }
+
+        @media screen and (min-width: 768px) {
+            h1 {
+                font-size: 2.5em;
+                margin-bottom: 10px;
+            }
+        }
+
+        .version {
+            color: #7f8c8d;
+            font-size: 0.95em;
+        }
+
+        @media screen and (min-width: 768px) {
+            .version {
+                font-size: 1.1em;
+            }
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        @media screen and (min-width: 768px) {
+            .form-group {
+                margin-bottom: 25px;
+            }
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            color: #2c3e50;
+            font-weight: bold;
+            font-size: 1em;
+        }
+
+        @media screen and (min-width: 768px) {
+            label {
+                font-size: 1.1em;
+            }
+        }
+
+        select {
+            width: 100%;
+            padding: 14px 12px;
+            font-size: 16px;
+            border: 2px solid #4A90E2;
+            border-radius: 8px;
+            background-color: white;
+            cursor: pointer;
+            transition: all 0.3s;
+            appearance: none;
+            -webkit-appearance: none;
+            -moz-appearance: none;
+            background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%234A90E2' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
+            background-repeat: no-repeat;
+            background-position: right 12px center;
+            background-size: 20px;
+            padding-right: 40px;
+        }
+
+        @media screen and (min-width: 768px) {
+            select {
+                padding: 12px;
+                padding-right: 40px;
+            }
+        }
+
+        select:hover {
+            border-color: #2980b9;
+        }
+
+        select:focus {
+            outline: none;
+            border-color: #2980b9;
+            box-shadow: 0 0 10px rgba(74, 144, 226, 0.3);
+        }
+
+        select:disabled {
+            background-color: #f5f5f5;
+            cursor: not-allowed;
+            opacity: 0.6;
+        }
+
+        .resultado {
+            display: none;
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 10px;
+            border-left: 5px solid #4A90E2;
+            margin-top: 20px;
+            overflow-x: auto;
+        }
+
+        @media screen and (min-width: 768px) {
+            .resultado {
+                padding: 25px;
+            }
+        }
+
+        .resultado.show {
+            display: block;
+            animation: fadeIn 0.5s;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .resultado h3 {
+            color: #2c3e50;
+            margin-bottom: 15px;
+            font-size: 1.2em;
+            border-bottom: 2px solid #4A90E2;
+            padding-bottom: 10px;
+            word-break: break-word;
+        }
+
+        @media screen and (min-width: 768px) {
+            .resultado h3 {
+                font-size: 1.5em;
+            }
+        }
+
+        .info-item {
+            margin-bottom: 12px;
+            padding: 12px;
+            background: white;
+            border-radius: 5px;
+            word-break: break-word;
+        }
+
+        @media screen and (min-width: 768px) {
+            .info-item {
+                padding: 10px;
+            }
+        }
+
+        .info-label {
+            font-weight: bold;
+            color: #4A90E2;
+            display: block;
+            margin-bottom: 5px;
+            font-size: 0.95em;
+        }
+
+        @media screen and (min-width: 768px) {
+            .info-label {
+                display: inline-block;
+                min-width: 150px;
+                margin-bottom: 0;
+            }
+        }
+
+        .info-value {
+            color: #2c3e50;
+            display: block;
+            font-size: 0.95em;
+        }
+
+        @media screen and (min-width: 768px) {
+            .info-value {
+                display: inline;
+            }
+        }
+
+        .info-value a {
+            color: #4A90E2;
+            text-decoration: none;
+            word-break: break-all;
+        }
+
+        .info-value a:hover {
+            text-decoration: underline;
+        }
+
+        .complementar {
+            margin-top: 20px;
+            padding-top: 15px;
+            border-top: 2px dashed #bdc3c7;
+        }
+
+        .complementar h4 {
+            color: #4A90E2;
+            margin-bottom: 10px;
+            font-size: 1.1em;
+        }
+
+        .footer {
+            text-align: center;
+            margin-top: 30px;
+            padding-top: 15px;
+            border-top: 2px solid #ecf0f1;
+            color: #7f8c8d;
+            font-size: 0.85em;
+        }
+
+        @media screen and (min-width: 768px) {
+            .footer {
+                margin-top: 40px;
+                padding-top: 20px;
+                font-size: 0.95em;
+            }
+        }
+
+        .footer p {
+            margin-bottom: 5px;
+        }
+
+        .developer {
+            font-weight: bold;
+            color: #4A90E2;
+        }
+
+        /* Scroll suave */
+        html {
+            scroll-behavior: smooth;
+        }
+
+        /* Melhorias para iPhone */
+        @supports (-webkit-touch-callout: none) {
+            select {
+                font-size: 16px; /* Previne zoom no iOS */
+            }
+        }
+
+        /* Loading state */
+        .loading {
+            opacity: 0.6;
+            pointer-events: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>📡 RADAR DE PREFEITURAS</h1>
+            <div class="version">Versão 1.0</div>
+        </div>
+
+        <div class="form-group">
+            <label for="prefeitura">Selecione a Prefeitura:</label>
+            <select id="prefeitura" onchange="carregarSecretarias()">
+                <option value="">-- Selecione uma prefeitura --</option>
+                <option value="cubatao">Cubatão</option>
+                <option value="bertioga">Bertioga</option>
+                <option value="santos">Santos</option>
+                <option value="guaruja">Guarujá</option>
+                <option value="saovicente">São Vicente</option>
+                <option value="praiagrande">Praia Grande</option>
+                <option value="mongagua">Mongaguá</option>
+                <option value="itanhaem">Itanhaém</option>
+                <option value="peruibe">Peruíbe</option>
+                <option value="santoandre">Santo André</option>
+                <option value="mogidascruzes">Mogi das Cruzes</option>
+                <option value="riograndedaserra">Rio Grande da Serra</option>
+                <option value="suzano">Suzano</option>
+                <option value="guarulhos">Guarulhos</option>
+                <option value="ribeiraopires">Ribeirão Pires</option>
+                <option value="maua">Mauá</option>
+                <option value="diadema">Diadema</option>
+                <option value="saocaetano">São Caetano do Sul</option>
+            </select>
+        </div>
+
+        <div class="form-group">
+            <label for="secretaria">Selecione a Secretaria:</label>
+            <select id="secretaria" onchange="exibirSecretario()" disabled>
+                <option value="">-- Primeiro selecione uma prefeitura --</option>
+            </select>
+        </div>
+
+        <div id="resultado" class="resultado"></div>
+
+        <div class="footer">
+            <p>© 2024 Radar de Prefeituras 1.0</p>
+            <p>Todos os direitos reservados</p>
+            <p>Desenvolvido por <span class="developer">Roniel Ferreira</span></p>
+        </div>
+    </div>
+
+    <script>
+        const dados = {
+            cubatao: {
+                nome: "Cubatão",
+                secretarias: {
+                    juridico: {
+                        nome: "Secretaria Municipal de Assuntos Jurídicos",
+                        secretario: "Rodrigo Dias Silva",
+                        cargo: "Secretário Municipal de Assuntos Jurídicos",
+                        endereco: "Paço Municipal - Praça dos Emancipadores, s/nº - 2º andar - Vila Couto - Cubatão/SP",
+                        email: "juridico@cubatao.sp.gov.br",
+                        contato: "(13) 3513-4001"
+                    },
+                    cmt: {
+                        nome: "Companhia Municipal de Trânsito (CMT)",
+                        secretario: "Rafael Lamberti",
+                        cargo: "Superintendente da CMT",
+                        endereco: "Av. Nove de Abril, 1.811 - Centro - Cubatão",
+                        email: "superintendente@cmtcubatao.sp.gov.br",
+                        contato: "(13) 3362-5600"
+                    },
+                    gabinete: {
+                        nome: "Gabinete do Prefeito",
+                        secretario: "Renata Almeida dos Santos",
+                        cargo: "Chefe de Gabinete do Prefeito",
+                        endereco: "Paço Municipal - Praça dos Emancipadores, s/nº - 2º andar - Vila Couto - Cubatão/SP",
+                        email: "gabinetedoprefeito@cubatao.sp.gov.br",
+                        contato: "(13) 3512-5049"
+                    },
+                    habitacao: {
+                        nome: "Secretaria Municipal de Habitação",
+                        secretario: "Andrea Maria Castro",
+                        cargo: "Secretária Municipal de Habitação e Vice-prefeita",
+                        endereco: "Paço Municipal - Praça dos Emancipadores, s/nº - 1º andar - Vila Couto - Cubatão/SP",
+                        email: "habitacao@cubatao.sp.gov.br",
+                        contato: "(13) 3512-5051"
+                    },
+                    meioambiente: {
+                        nome: "Secretaria Municipal de Meio Ambiente, Segurança Climática e Bem-estar Animal",
+                        secretario: "Cleiton Jordão Santos",
+                        cargo: "Secretário Municipal de Meio Ambiente, Segurança Climática e Bem-estar Animal",
+                        endereco: "Paço Municipal - Praça dos Emancipadores, s/nº - 1º andar - Vila Couto - Cubatão/SP",
+                        email: "meioambiente@cubatao.sp.gov.br",
+                        contato: "(13) 3512-5077"
+                    },
+                    obras: {
+                        nome: "Secretaria Municipal de Obras e Desenvolvimento Urbano",
+                        secretario: "Marcos Silva Quarterolli",
+                        cargo: "Secretário Municipal de Obras e Desenvolvimento Urbano",
+                        endereco: "Paço Municipal - Praça dos Emancipadores, s/nº - 1º andar - Vila Couto - Cubatão/SP",
+                        email: "obras@cubatao.sp.gov.br",
+                        contato: "(13) 3512-5078"
+                    },
+                    planejamento: {
+                        nome: "Secretaria Municipal de Planejamento",
+                        secretario: "Wilney José Fraga",
+                        cargo: "Secretário Municipal de Planejamento",
+                        endereco: "Paço Municipal - Praça dos Emancipadores, s/nº - 1º andar - Vila Couto - Cubatão/SP",
+                        email: "planejamento@cubatao.sp.gov.br",
+                        contato: "(13) 3512-5079"
+                    }
+                }
+            },
+            bertioga: {
+                nome: "Bertioga",
+                secretarias: {
+                    gabinete: {
+                        nome: "Gabinete do Prefeito",
+                        secretario: "Marcelo Vilares",
+                        cargo: "Prefeito",
+                        endereco: "Rua Luiz Pereira de Campos, 901 Centro, Bertioga/SP",
+                        email: "gabinete@bertioga.sp.gov.br",
+                        contato: "(13) 3319-8002",
+                        complementar: {
+                            nome: "Lucília Goulart",
+                            cargo: "Vice-Prefeita",
+                            email: "gabineteviceprefeito@outlook.com / viceprefeito@bertioga.sp.gov.br"
+                        }
+                    },
+                    meioambiente: {
+                        nome: "Secretaria Municipal de Meio Ambiente",
+                        secretario: "Fernando Almeida Poyatos",
+                        cargo: "Secretário Municipal de Meio Ambiente",
+                        endereco: "Rua Luiz Pereira de Campos, 901 Centro, Bertioga/SP",
+                        email: "sec.meioambiente@bertioga.sp.gov.br",
+                        contato: "(13) 3319-8034",
+                        complementar: {
+                            nome: "Marco Antonio Godoi",
+                            cargo: "Diretor do Departamento de Licenciamento Ambiental",
+                            contato: "(13) 3319-8142"
+                        }
+                    },
+                    obras: {
+                        nome: "Secretaria Municipal de Obras e Habitação",
+                        secretario: "Luiz Carlos Rachid",
+                        cargo: "Secretário Municipal de Obras e Habitação",
+                        endereco: "Rua Luiz Pereira de Campos, 901 Centro, Bertioga/SP",
+                        email: "sec.obras@bertioga.sp.gov.br",
+                        contato: "(13) 3319-8033"
+                    },
+                    planejamento: {
+                        nome: "Secretaria Municipal de Planejamento Urbano",
+                        secretario: "Tarcisio Pereira Lima",
+                        cargo: "Secretário Municipal de Planejamento Urbano",
+                        endereco: "Rua Luiz Pereira de Campos, 901 Centro, Bertioga/SP",
+                        email: "sec.planejamento@bertioga.sp.gov.br",
+                        contato: "(13) 3319-8050"
+                    }
+                }
+            },
+            santos: {
+                nome: "Santos",
+                secretarias: {
+                    gabinete: {
+                        nome: "Gabinete do Prefeito",
+                        secretario: "Rogério Santos",
+                        cargo: "Prefeito",
+                        endereco: "Praça Visconde de Mauá, s/nº, 1º andar, Centro Histórico, Santos/SP",
+                        email: "pms@santos.sp.gov.br",
+                        contato: "(13) 3201-5000",
+                        complementar: {
+                            nome: "Audrey Kleys",
+                            cargo: "Vice-Prefeita",
+                            email: "viceprefeita@santos.sp.gov.br",
+                            contato: "(13) 3201-5111"
+                        }
+                    },
+                    meioambiente: {
+                        nome: "Secretaria Municipal de Meio Ambiente, Desenvolvimento Urbano e Sustentabilidade",
+                        secretario: "Glaucus Renzo Farinello",
+                        cargo: "Secretário Municipal de Meio Ambiente",
+                        endereco: "Praca dos Expedicionários, 3º, 8º e 9º andares - Gonzaga - Santos/SP",
+                        email: "semam@santos.sp.gov.br",
+                        contato: "(13) 3319-8034"
+                    },
+                    obras: {
+                        nome: "Secretaria Municipal de Obras e Edificações",
+                        secretario: "Larissa Oliveira Cordeiro",
+                        cargo: "Secretária Municipal de Obras e Habitação",
+                        endereco: "Praça Visconde de Mauá, s/nº, 3º andar, Centro Histórico, Santos/SP",
+                        email: "gab-siedi@santos.sp.gov.br",
+                        contato: "(13) 3201-5151"
+                    },
+                    infraestrutura: {
+                        nome: "Secretaria de Infraestrutura e Serviços Públicos",
+                        secretario: "Wagner Ramos",
+                        cargo: "Secretário Municipal de Infraestrutura",
+                        endereco: "Praça dos Expedicionários, 10, 6º andar - Gonzaga",
+                        email: "gab-seinfra@santos.sp.gov.br",
+                        contato: "(13) 3319-8050",
+                        complementar: {
+                            nome: "Antonio Carlos Silva Gonçalves",
+                            cargo: "Diretor Presidente - CET",
+                            endereco: "Av. Rangel Pestana, 100, Vila Mathias – Santos/SP",
+                            email: "cet@cetsantos.com.br"
+                        }
+                    }
+                }
+            },
+            guaruja: {
+                nome: "Guarujá",
+                secretarias: {
+                    juridico: {
+                        nome: "Secretaria Municipal de Assuntos Jurídicos",
+                        secretario: "Marcelo Henrique Garcia Ribeiro",
+                        cargo: "Secretário Municipal de Assuntos Jurídicos",
+                        endereco: "Paço Moacir dos Santos Filho – 3º andar – Avenida Santos Dumont nº 800 – Bairro: Santo Antônio – Guarujá/SP",
+                        email: "advocaciageral@prefeitura.guaruja.sp.gov.br",
+                        contato: "(13) 3308-7390"
+                    },
+                    gabinete: {
+                        nome: "Gabinete do Prefeito",
+                        secretario: "Fábio Eduardo Gaze Ursic",
+                        cargo: "Chefe de Gabinete do Prefeito",
+                        endereco: "Paço Moacir dos Santos Filho, Avenida Santos Dumont, nº 800, Santo Antônio, Guarujá-SP",
+                        email: "gabinete@prefeitura.guaruja.sp.gov.br",
+                        contato: "(13) 3308-7570 / (13) 3308-7000"
+                    },
+                    habitacao: {
+                        nome: "Secretaria Municipal de Habitação",
+                        secretario: "Pedro Luís de Freitas Gouvêa Júnior",
+                        cargo: "Secretário Municipal de Habitação",
+                        endereco: "Paço Raphael Vitiello, 2º andar, sala 35. Avenida Santos Dumont, nº 640, Santo Antônio, Guarujá-SP",
+                        email: "sehab@prefeitura.guaruja.sp.gov.br",
+                        contato: "(13) 3308-6980"
+                    },
+                    meioambiente: {
+                        nome: "Secretaria Municipal de Meio Ambiente e Segurança Climática",
+                        secretario: "Rodrigo Fernandes",
+                        cargo: "Secretário Municipal de Meio Ambiente e Segurança Climática",
+                        endereco: "Paço Raphael Vitiello, 2º andar, sala 35. Avenida Santos Dumont, nº 640, Santo Antônio, Guarujá-SP",
+                        email: "semam@prefeitura.guaruja.sp.gov.br",
+                        contato: "(13) 3308-7888"
+                    },
+                    infraestrutura: {
+                        nome: "Secretaria Municipal de Infraestrutura e Obras",
+                        secretario: "Henrique Cezar Therezo Menin",
+                        cargo: "Secretário Municipal de Infraestrutura e Obras",
+                        endereco: "Paço Raphael Vitiello, 2º andar, sala 33. Av. Santos Dumont, nº 640, Santo Antônio, Guarujá-SP",
+                        email: "seinfra@prefeitura.guaruja.sp.gov.br",
+                        contato: "(13) 3308-7970"
+                    },
+                    planejamento: {
+                        nome: "Secretaria Municipal de Planejamento Estratégico",
+                        secretario: "Daniela Teixeira Mariano",
+                        cargo: "Secretária Municipal de Planejamento Estratégico",
+                        endereco: "Paço Moacir dos Santos Filho – Avenida Santos Dumont, 800 – 2º Andar – Vila Santo Antônio, Guarujá–SP",
+                        email: "seplan@prefeitura.guaruja.sp.gov.br",
+                        contato: "(13) 3308-7296"
+                    }
+                }
+            },
+            saovicente: {
+                nome: "São Vicente",
+                secretarias: {
+                    juridico: {
+                        nome: "Secretaria Municipal de Assuntos Jurídicos",
+                        secretario: "Wilson Raia Carvalho",
+                        cargo: "Secretário Municipal de Assuntos Jurídicos",
+                        endereco: "Rua José Bonifácio, 404 7º andar - Centro",
+                        email: "sejur@saovicente.sp.gov.br",
+                        contato: "(13) 3569-2281"
+                    },
+                    gabinete: {
+                        nome: "Gabinete do Prefeito",
+                        secretario: "Mário Santana Neto",
+                        cargo: "Secretário de Gabinete do Prefeito",
+                        endereco: "Rua Frei Gaspar, 384 - Sala 17, São Vicente-SP",
+                        email: "gabinete@saovicente.sp.gov.br",
+                        contato: "(13) 2028-0250"
+                    },
+                    habitacao: {
+                        nome: "Secretaria Municipal de Habitação",
+                        secretario: "Higor de Oliveira Ferreira",
+                        cargo: "Secretário Municipal de Habitação",
+                        endereco: "Rua José Bonifácio, 404, 5º andar - Centro",
+                        email: "sehabsv@saovicente.sp.gov.br",
+                        contato: "(13) 3569-2215"
+                    },
+                    meioambiente: {
+                        nome: "Secretaria Municipal de Meio Ambiente (SEMAM)",
+                        secretario: "Flávia Ramacciotti Cesar de Oliveira",
+                        cargo: "Secretária Municipal de Meio Ambiente",
+                        endereco: "Rua José Bonifácio, 404, 4° andar - Centro",
+                        email: "gabinetesemam@saovicente.sp.gov.br",
+                        contato: "(13) 3569-2213"
+                    },
+                    licenciamento: {
+                        nome: "Secretaria de Projetos Especiais/Licenciamento (SEL)",
+                        secretario: "Gabriel Birkett",
+                        cargo: "Secretário Municipal de Infraestrutura e Obras",
+                        endereco: "Praça da Bandeira, nº 15 – 4º andar - Centro",
+                        email: "sel@saovicente.sp.gov.br",
+                        contato: "(13) 3467-7134"
+                    },
+                    planejamento: {
+                        nome: "Secretaria de Planejamento e Governança (SEPLAG)",
+                        secretario: "Talita Correa Santos",
+                        cargo: "Secretária Municipal",
+                        endereco: "Rua José Bonifácio, 404 - 6º andar - Centro",
+                        email: "seplan@saovicente.sp.gov.br",
+                        contato: "(13) 2028-0433"
+                    }
+                }
+            },
+            praiagrande: {
+                nome: "Praia Grande",
+                secretarias: {
+                    gabinete: {
+                        nome: "Gabinete do Prefeito",
+                        secretario: "Katsu Yonamine",
+                        cargo: "Secretário de Gabinete do Prefeito",
+                        endereco: "Avenida Presidente Kennedy, nº 9.000, Mirim - 2º Andar - Praia Grande SP",
+                        email: "gpatendimento@praiagrande.sp.gov.br",
+                        contato: "(13) 3496-2000"
+                    },
+                    habitacao: {
+                        nome: "Secretaria Municipal de Habitação",
+                        secretario: "Fabrício Menezes de Paula",
+                        cargo: "Secretário Municipal de Habitação",
+                        endereco: "Avenida Presidente Kennedy, Bairro Mirim nº 9.000 - 1º Andar - Praia Grande SP",
+                        email: "atendimentosehab@praiagrande.sp.gov.br",
+                        contato: "(13) 3496-2033"
+                    },
+                    meioambiente: {
+                        nome: "Secretaria Municipal de Meio Ambiente",
+                        secretario: "Valdir Pereira Ramos Filho",
+                        cargo: "Secretário Municipal de Meio Ambiente",
+                        endereco: "Avenida Presidente Costa e Silva, 794, 6º andar - Boqueirão - Praia Grande SP",
+                        email: "sema@praiagrande.sp.gov.br",
+                        contato: "(13) 3569-2213"
+                    },
+                    obras: {
+                        nome: "Secretaria de Obras Públicas",
+                        secretario: "Eloisa Ojea Gomes Tavares",
+                        cargo: "Secretária de Obras Públicas",
+                        endereco: "Avenida Presidente Kennedy, nº 9.000, Mirim - 2º Andar - Praia Grande SP",
+                        email: "seop@praiagrande.sp.gov.br",
+                        contato: "(13) 3496-2142"
+                    },
+                    planejamento: {
+                        nome: "Secretaria de Planejamento e Governança (SEPLAN)",
+                        secretario: "Josie Yabuta de Lima Hollanda",
+                        cargo: "Secretária de Planejamento",
+                        endereco: "Avenida Presidente Kennedy, nº 9.000, Mirim - 1º Andar - Praia Grande SP",
+                        email: "seplan@praiagrande.sp.gov.br",
+                        contato: "(13) 3496-2047"
+                    },
+                    transito: {
+                        nome: "Secretaria de Trânsito",
+                        secretario: "Marcelino Santos Gomes",
+                        cargo: "Secretário de Trânsito",
+                        endereco: "Rua Amália Bellotti Pastorello, nº 72, Sítio do Campo - Praia Grande SP",
+                        email: "setran@praiagrande.sp.gov.br",
+                        contato: "0800-7720194"
+                    }
+                }
+            },
+            mongagua: {
+                nome: "Mongaguá",
+                secretarias: {
+                    gabinete: {
+                        nome: "Gabinete da Prefeita",
+                        secretario: "Cristina Wiazowski",
+                        cargo: "Prefeita",
+                        endereco: "Avenida Getúlio Vargas, 67, Mongaguá/SP",
+                        email: "gabinete@mongagua.sp.gov.br",
+                        contato: "(13) 3445-3000"
+                    },
+                    habitacao: {
+                        nome: "Secretaria Municipal de Habitação",
+                        secretario: "Fernando Felizi",
+                        cargo: "Secretário Municipal de Habitação",
+                        endereco: "Rua Máximo Cavani, 30, Vila São Paulo",
+                        email: "habitacao@mongagua.sp.gov.br",
+                        contato: "(13) 3507-1163"
+                    },
+                    meioambiente: {
+                        nome: "Secretaria Municipal de Agricultura e Meio Ambiente",
+                        secretario: "Alexandre Barril Dalla Pria",
+                        cargo: "Secretário Municipal de Agricultura e Meio Ambiente",
+                        endereco: "Rua Máximo Cavani, 30, Vila São Paulo",
+                        email: "meioambiente@mongagua.sp.gov.br",
+                        contato: "(13) 3448-4630"
+                    },
+                    obras: {
+                        nome: "Secretaria de Obras Públicas",
+                        secretario: "Carlos Cafema",
+                        cargo: "Secretário de Obras Públicas",
+                        endereco: "Rua Máximo Cavani, 30, Vila São Paulo",
+                        email: "obraspublicas@mongagua.sp.gov.br",
+                        contato: "(13) 3445-3045"
+                    },
+                    planejamento: {
+                        nome: "Secretaria de Planejamento Urbano e Ambiental",
+                        secretario: "Kátia Regina Cardoso Carvalho Freire",
+                        cargo: "Secretária de Planejamento",
+                        endereco: "Rua Máximo Cavani, 30, Vila São Paulo",
+                        email: "planejamento@mongagua.sp.gov.br",
+                        contato: "(13) 3445-3063"
+                    },
+                    seguranca: {
+                        nome: "Secretaria de Segurança Pública e Trânsito",
+                        secretario: "Marcelino Santos Gomes",
+                        cargo: "Secretário de Trânsito",
+                        endereco: "Avenida Monteiro Lobato, 10.410, Agenor de Campos",
+                        email: "seguranca@mongagua.sp.gov.br",
+                        contato: "(13) 3448-1011"
+                    }
+                }
+            },
+            itanhaem: {
+                nome: "Itanhaém",
+                secretarias: {
+                    gabinete: {
+                        nome: "Gabinete do Prefeito",
+                        secretario: "Eliseu Braga Chagas",
+                        cargo: "Prefeito",
+                        endereco: "Avenida Washington Luiz, 75 – Itanhaém – SP",
+                        email: "prefeito@itanhaem.sp.gov.br",
+                        contato: "(13) 3421-1600"
+                    },
+                    habitacao: {
+                        nome: "Secretaria Municipal de Habitação",
+                        secretario: "Mara Sanches Figueiredo",
+                        cargo: "Secretária Municipal de Habitação",
+                        endereco: "Avenida Washington Luiz, 75 – Itanhaém – SP",
+                        email: "habitacao@itanhaem.sp.gov.br",
+                        contato: "(13) 3427-7376 / (13) 3427-7369"
+                    },
+                    meioambiente: {
+                        nome: "Secretaria de Meio Ambiente e Bem-estar",
+                        secretario: "César Augusto de Souza Ferreira",
+                        cargo: "Secretário Municipal de Agricultura e Meio Ambiente",
+                        endereco: "Av. Washington Luiz, 75 – Bloco 2 – Sala 12, 2° andar – Centro",
+                        email: "planejamentoemeioambiente@itanhaem.sp.gov.br",
+                        contato: "(13) 3421-1600"
+                    },
+                    obras: {
+                        nome: "Secretaria de Planejamento Urbano e Obras Públicas",
+                        secretario: "Vinicius Camba de Almeida",
+                        cargo: "Secretário de Obras Públicas e Planejamento Urbano",
+                        endereco: "Av. Washington Luiz, 75 – Bloco 2 – Sala 32, 2° andar – Centro",
+                        email: "obraspublicas@itanhaem.sp.gov.br",
+                        contato: "(13) 3421-1600 Ramal 1279 / 1679"
+                    }
+                }
+            },
+            peruibe: {
+                nome: "Peruíbe",
+                secretarias: {
+                    gabinete: {
+                        nome: "Gabinete do Prefeito",
+                        secretario: "Felipe Antonio Colaço Bernardo",
+                        cargo: "Prefeito",
+                        endereco: "Rua Nilo Soares Ferreira, 50, Peruibe",
+                        email: "falecomoprefeito@peruibe.sp.gov.br",
+                        contato: "(13) 3451-1000",
+                        complementar: {
+                            nome: "Alexandre Tamer Junior",
+                            cargo: "Vice-Prefeito",
+                            email: "gabinete.vice@peruibe.sp.gov.br"
+                        }
+                    },
+                    habitacao: {
+                        nome: "Secretaria Municipal de Habitação",
+                        secretario: "Artur Renato Chaves Martins",
+                        cargo: "Secretário Municipal de Habitação",
+                        endereco: "Rua Nilo Soares Ferreira, 50, Peruibe",
+                        email: "sec.habitacao@peruibe.sp.gov.br",
+                        contato: "(13) 3451-1072"
+                    },
+                    meioambiente: {
+                        nome: "Secretaria de Meio Ambiente e Agricultura",
+                        secretario: "Eduardo Ribas",
+                        cargo: "Secretário Municipal de Agricultura e Meio Ambiente",
+                        endereco: "Rua Nilo Soares Ferreira, 50, Peruibe",
+                        email: "meioambiente@peruibe.sp.gov.br",
+                        contato: "(13) 3451-1000"
+                    },
+                    planejamento: {
+                        nome: "Secretaria de Planejamento",
+                        secretario: "Elias Abdalla Neto",
+                        cargo: "Secretário de Planejamento",
+                        endereco: "Rua Nilo Soares Ferreira, 50, Peruibe",
+                        email: "prefeituraperuibe@peruibe.sp.gov.br",
+                        contato: "(13) 3451-1000"
+                    },
+                    juridico: {
+                        nome: "Secretaria Jurídica",
+                        secretario: "Paulo Renato Passos de Carvalho Pereira",
+                        cargo: "Advogado",
+                        endereco: "Rua Nilo Soares Ferreira, 50, Peruibe",
+                        email: "saj@peruibe.sp.gov.br",
+                        contato: "(13) 3451-1000"
+                    },
+                    obras: {
+                        nome: "Secretaria de Obras, Serviços e Infraestrutura Urbana",
+                        secretario: "José Santana Mendes",
+                        cargo: "Secretário de Obras",
+                        endereco: "Rua Nilo Soares Ferreira, 50, Peruibe",
+                        email: "secretariaobras@peruibe.sp.gov.br",
+                        contato: "(13) 3451-1044"
+                    }
+                }
+            },
+            santoandre: {
+                nome: "Santo André",
+                secretarias: {
+                    gabinete: {
+                        nome: "Chefia de Gabinete",
+                        secretario: "Ana Claudia Cebrian Leite",
+                        cargo: "Chefe de Gabinete",
+                        endereco: "Praça IV Centenário, nº 01 – 10º andar",
+                        email: "accleite@santoandre.sp.gov.br",
+                        contato: "(11) 4433-0122"
+                    },
+                    juridico: {
+                        nome: "Secretaria Municipal de Assuntos Jurídicos",
+                        secretario: "Luiz Felipe da Silva Lobato",
+                        cargo: "Secretário Municipal de Assuntos Jurídicos",
+                        endereco: "Praça IV Centenário, nº 01 – 15º andar",
+                        email: "lfslobato@santoandre.sp.gov.br",
+                        contato: "(11) 4433-0600"
+                    },
+                    meioambiente: {
+                        nome: "Secretaria Municipal de Meio Ambiente e Mudanças Climáticas",
+                        secretario: "Edinilson Ferreira dos Santos",
+                        cargo: "Secretário Municipal de Meio Ambiente e Mudanças Climáticas",
+                        endereco: "Av. José Caballero, 143 – 6º andar",
+                        email: "meioambiente@santoandre.sp.gov.br",
+                        contato: "(11) 4433-9602",
+                        complementar: {
+                            nome: "Paloma Alvarez Alonso",
+                            cargo: "Secretária Municipal - COMUGESAN",
+                            endereco: "Av. José Caballero, 143 – 7º andar",
+                            email: "comugesan@semasa.sp.gov.br",
+                            contato: "(11) 4433-9059"
+                        }
+                    },
+                    infraestrutura: {
+                        nome: "Secretaria Municipal de Infraestrutura e Obras",
+                        secretario: "André Scarpino",
+                        cargo: "Secretário Municipal de Infraestrutura e Obras",
+                        endereco: "Prédio do Executivo – 8º andar",
+                        email: "imprensa@santoandre.sp.gov.br",
+                        contato: "(11) 4433-0000"
+                    },
+                    mobilidade: {
+                        nome: "Secretaria Municipal de Mobilidade Urbana",
+                        secretario: "Almir Cicote",
+                        cargo: "Secretário Municipal de Mobilidade Urbana",
+                        endereco: "Rua Ilhéus, 61 – Centro – 2º andar",
+                        email: "mobilidade.urbana@santoandre.sp.gov.br",
+                        contato: "(11) 4468-4400"
+                    },
+                    relacoes: {
+                        nome: "Secretaria de Relações Políticas e Institucionais",
+                        secretario: "Ivo de Lima",
+                        cargo: "Secretário Municipal de Relações Políticas e Institucionais",
+                        endereco: "Praça IV Centenário",
+                        email: "ilima@santoandre.sp.gov.br",
+                        contato: "(11) 4433-0000"
+                    },
+                    habitacao: {
+                        nome: "Secretaria de Desenvolvimento Urbano e Habitação",
+                        secretario: "Marília Formoso Camargo",
+                        cargo: "Secretária Municipal de Desenvolvimento Urbano e Habitação",
+                        endereco: "Prédio do Executivo – 6º andar",
+                        email: "mfcamargo@santoandre.sp.gov.br",
+                        contato: "(11) 4433-0210"
+                    }
+                }
+            },
+            mogidascruzes: {
+                nome: "Mogi das Cruzes",
+                secretarias: {
+                    gabinete: {
+                        nome: "Gabinete da Prefeita",
+                        secretario: "Mara Bertaiolli",
+                        cargo: "Prefeita",
+                        endereco: "Av. Ver. Narciso Yague Guimarães, 277",
+                        email: "gabinete@mogidascruzes.sp.gov.br",
+                        contato: "(11) 4798-5000"
+                    },
+                    juridico: {
+                        nome: "Secretaria Municipal de Assuntos Jurídicos",
+                        secretario: "Filipe Hermanson",
+                        cargo: "Secretário Municipal de Assuntos Jurídicos",
+                        endereco: "Av. Ver. Narciso Yague Guimarães, 277",
+                        email: "expediente.smaj@mogidascruzes.sp.gov.br",
+                        contato: "(11) 4798-6330 / 4798-6343"
+                    },
+                    obras: {
+                        nome: "Secretaria Municipal de Obras Públicas",
+                        secretario: "Nilmar de Cássia Ferreira",
+                        cargo: "Secretário Municipal de Obras Públicas",
+                        email: "obras@mogidascruzes.sp.gov.br",
+                        contato: "(11) 4798-5065"
+                    },
+                    planejamento: {
+                        nome: "Secretaria Municipal de Planejamento e Urbanismo",
+                        secretario: "João Francisco Chavedar",
+                        cargo: "Secretário Municipal de Planejamento e Urbanismo",
+                        email: "smpu@mogidascruzes.sp.gov.br",
+                        contato: "(11) 4798-5071"
+                    },
+                    mobilidade: {
+                        nome: "Secretaria Municipal de Mobilidade e Trânsito",
+                        secretario: "Felício Kamiyama",
+                        cargo: "Secretário Municipal de Mobilidade e Trânsito",
+                        email: "gabinete.smt@mogidascruzes.sp.gov.br",
+                        contato: "(11) 4798-5122"
+                    }
+                }
+            },
+            riograndedaserra: {
+                nome: "Rio Grande da Serra",
+                secretarias: {
+                    gabinete: {
+                        nome: "Gabinete do Prefeito",
+                        secretario: "Ricardo Akira Ono Auriani",
+                        cargo: "Prefeito Municipal",
+                        endereco: "Avenida Dom Pedro I, nº 10 – Centro",
+                        email: "gabinete@riograndedaserra.sp.gov.br",
+                        contato: "(11) 2770-0192",
+                        complementar: {
+                            nome: "Vilma Marcelino",
+                            cargo: "Vice-Prefeita"
+                        },
+                        complementar2: {
+                            nome: "Paula Maria de Oliveira da Silva Costa",
+                            cargo: "Chefe de Gabinete"
+                        }
+                    },
+                    obras: {
+                        nome: "Secretaria de Obras e Planejamento",
+                        secretario: "Wanderlei Felipe da Silva Junior",
+                        cargo: "Secretário Municipal de Obras e Planejamento",
+                        endereco: "Avenida Dom Pedro I, nº 10 – Centro",
+                        email: "obraseplanejamento@riograndedaserra.sp.gov.br",
+                        contato: "(11) 2770-0172",
+                        complementar: {
+                            nome: "Vinicius Nogueira Carneiro",
+                            cargo: "Secretário Adjunto de Obras e Planejamento"
+                        }
+                    },
+                    servicosurbanos: {
+                        nome: "Secretaria de Serviços Urbanos",
+                        secretario: "Jefferson Crispim de Souza",
+                        cargo: "Secretário Municipal de Serviços Urbanos",
+                        endereco: "Rua Prefeito Cido Franco, 530 – Vila Arnoud (ao lado da UBS Central)",
+                        email: "ssu@riograndedaserra.sp.gov.br",
+                        contato: "(11) 2770-0176",
+                        complementar: {
+                            nome: "Ednilson da Silva Gomes",
+                            cargo: "Secretário Adjunto de Serviços Urbanos"
+                        }
+                    },
+                    juridico: {
+                        nome: "Secretaria de Assuntos Jurídicos",
+                        secretario: "Wanessa de Paula Isidio da Silva",
+                        cargo: "Secretária Municipal de Assuntos Jurídicos",
+                        endereco: "Rua do Progresso, nº 700 – Centro",
+                        email: "juridico@riograndedaserra.sp.gov.br",
+                        contato: "(11) 2770-0185",
+                        complementar: {
+                            nome: "Daniel Francisco",
+                            cargo: "Secretário Adjunto de Assuntos Jurídicos"
+                        }
+                    },
+                    governo: {
+                        nome: "Secretaria de Governo e Relações Institucionais",
+                        secretario: "Maciel Manoel de Oliveira",
+                        cargo: "Secretário Municipal de Governo e Relações Institucionais",
+                        endereco: "Avenida Dom Pedro I, nº 10 – Centro",
+                        email: "governo@riograndedaserra.sp.gov.br",
+                        contato: "(11) 2770-0208",
+                        complementar: {
+                            nome: "Rogério Junior",
+                            cargo: "Secretário Adjunto de Governo e Relações Institucionais"
+                        }
+                    },
+                    gestao: {
+                        nome: "Secretaria de Gestão, Programas, Projetos e Tecnologia",
+                        secretario: "Rodrigo Macei",
+                        cargo: "Secretário Municipal de Gestão, Programas, Projetos e Tecnologia",
+                        endereco: "Avenida Dom Pedro I, nº 10 – Centro",
+                        email: "gestaodeprojetos@riograndedaserra.sp.gov.br",
+                        complementar: {
+                            nome: "Bárbara Regina Ferreira",
+                            cargo: "Secretária Adjunta"
+                        }
+                    }
+                }
+            },
+            suzano: {
+                nome: "Suzano",
+                secretarias: {
+                    gabinete: {
+                        nome: "Chefia de Gabinete",
+                        secretario: "Afrânio Evaristo da Silva",
+                        cargo: "Chefe de Gabinete",
+                        endereco: "Rua Baruel, 501 – Paço Municipal",
+                        contato: "(11) 4745-2238"
+                    },
+                    juridico: {
+                        nome: "Secretaria de Assuntos Jurídicos",
+                        secretario: "Renato Machado Ferraris",
+                        cargo: "Secretário Municipal de Assuntos Jurídicos",
+                        endereco: "Rua Baruel, 501 – Paço Municipal",
+                        contato: "(11) 4745-2053"
+                    },
+                    planejamento: {
+                        nome: "Secretaria de Planejamento Urbano e Habitação",
+                        secretario: "Elvis José Vieira",
+                        cargo: "Secretário Municipal de Planejamento Urbano e Habitação",
+                        endereco: "Rua Paulo Portela, 210",
+                        email: "smpuh@suzano.sp.gov.br",
+                        contato: "(11) 4745-2123"
+                    },
+                    meioambiente: {
+                        nome: "Secretaria de Meio Ambiente",
+                        secretario: "André Guan Long Chiang",
+                        cargo: "Secretário Municipal de Meio Ambiente",
+                        endereco: "Av. Paulo Portela, 210 – 2º andar",
+                        email: "smma@suzano.sp.gov.br",
+                        contato: "(11) 4745-2265"
+                    },
+                    controladoria: {
+                        nome: "Controladoria Geral do Município",
+                        secretario: "César Braga",
+                        cargo: "Controlador Geral do Município",
+                        endereco: "Rua Baruel, 126",
+                        contato: "(11) 4743-1796"
+                    },
+                    transporte: {
+                        nome: "Secretaria de Transporte e Mobilidade Urbana",
+                        secretario: "Claudinei Valdemar Galo",
+                        cargo: "Secretário de Transporte e Mobilidade Urbana",
+                        endereco: "Rua Baruel, 501",
+                        email: "falecom@suzano.sp.gov.br",
+                        contato: "(11) 4745-2000"
+                    }
+                }
+            },
+            guarulhos: {
+                nome: "Guarulhos",
+                secretarias: {
+                    gabinete: {
+                        nome: "Chefia de Gabinete",
+                        secretario: "Caio da Silva Santos",
+                        cargo: "Secretário de Gabinete",
+                        endereco: "Av. Bom Clima, 91 - Bom Clima",
+                        email: "cgprefeito@guarulhos.sp.gov.br",
+                        contato: "(11) 2475-8641"
+                    },
+                    gestao: {
+                        nome: "Secretaria de Gestão",
+                        secretario: "Armando Tavares dos Santos Neto",
+                        cargo: "Secretário da SGE",
+                        endereco: "Av. Pres. Humberto de Alencar Castelo Branco, 1041 - Vila Augusta",
+                        email: "secretariagestao@guarulhos.sp.gov.br",
+                        contato: "(11) 2423-7417"
+                    },
+                    habitacao: {
+                        nome: "Secretaria de Habitação",
+                        secretario: "Anderson Rodrigues Mello",
+                        cargo: "Secretário Municipal de Habitação",
+                        endereco: "Av. Guarulhos, 2200 - Vila Augusta",
+                        email: "habitacao@guarulhos.sp.gov.br",
+                        contato: "(11) 2088-5600"
+                    },
+                    meioambiente: {
+                        nome: "Secretaria do Verde, Clima e Sustentabilidade",
+                        secretario: "Alex Mendes Nepomuceno",
+                        cargo: "Secretário da SVCS",
+                        endereco: "Av. Antônio Vita, 253 - Cidade Maia",
+                        email: "gabinetesema@guarulhos.sp.gov.br",
+                        contato: "(11) 2475-9840 / 9857 / 9867"
+                    },
+                    mobilidade: {
+                        nome: "Secretaria de Mobilidade Urbana",
+                        secretario: "João Marcos de Araujo",
+                        cargo: "Secretário da SEMOB",
+                        endereco: "Rua Dora, 18 - Vila Barros",
+                        email: "semob@guarulhos.sp.gov.br",
+                        contato: "(11) 2402-6200"
+                    },
+                    infraestrutura: {
+                        nome: "Secretaria de Infraestrutura Urbana",
+                        secretario: "Roberto Kimura",
+                        cargo: "Secretário da SIURB",
+                        endereco: "Av. Emílio Ribas, 1247 - Gopoúva",
+                        email: "obras@guarulhos.sp.gov.br",
+                        contato: "(11) 2475-9901"
+                    }
+                }
+            },
+            ribeiraopires: {
+                nome: "Ribeirão Pires",
+                secretarias: {
+                    gabinete: {
+                        nome: "Gabinete do Prefeito",
+                        secretario: "Guto Volpi",
+                        cargo: "Secretário de Gabinete",
+                        endereco: "Rua Miguel Prisco, 288 - Centro",
+                        email: "gp@ribeiraopires.sp.gov.br",
+                        contato: "(11) 4828-9840"
+                    },
+                    juridico: {
+                        nome: "Secretaria de Assuntos Jurídicos",
+                        secretario: "Rangel Ferreira",
+                        cargo: "Secretário de Assuntos Jurídicos",
+                        endereco: "Rua Miguel Prisco, 288 - Centro",
+                        email: "sj@ribeiraopires.sp.gov.br",
+                        contato: "(11) 4828-9820"
+                    },
+                    meioambiente: {
+                        nome: "Secretaria de Clima, Meio Ambiente e Habitação",
+                        secretario: "Temistocles Cristófaro",
+                        cargo: "Secretário Municipal",
+                        endereco: "Rua Miguel Prisco, 288, Centro",
+                        email: "sema@ribeiraopires.sp.gov.br",
+                        contato: "(11) 4828-9800"
+                    },
+                    obras: {
+                        nome: "Secretaria de Obras",
+                        secretario: "Agostinho Gomes",
+                        cargo: "Secretário de Obras",
+                        endereco: "Rua Miguel Prisco, nº288 - 1º andar",
+                        email: "sosm@ribeiraopires.sp.gov.br",
+                        contato: "(11) 4828-9800"
+                    },
+                    seguranca: {
+                        nome: "Secretaria de Segurança Urbana, Mobilidade e Defesa Civil",
+                        secretario: "Arlei Capoccio",
+                        cargo: "Secretário Municipal",
+                        endereco: "Avenida Kaethe Richers - Portal",
+                        email: "ssp@ribeiraopires.sp.gov.br",
+                        contato: "(11) 4828-5509"
+                    },
+                    zeladoria: {
+                        nome: "Secretaria de Zeladoria e Manutenção Urbana",
+                        secretario: "Nando Gianasi",
+                        cargo: "Secretário Municipal",
+                        endereco: "Rua dos Estudantes, 294 - Jd Pastoril",
+                        email: "zeladoria@ribeiraopires.sp.gov.br",
+                        contato: "(11) 4828-1609"
+                    }
+                }
+            },
+            maua: {
+                nome: "Mauá",
+                secretarias: {
+                    gabinete: {
+                        nome: "Gabinete do Prefeito",
+                        secretario: "Lilian de Oliveira Dias",
+                        cargo: "Chefe de Gabinete",
+                        endereco: "Av. João Ramalho, 205 2° andar - Vila Noêmia",
+                        email: "prefeito@maua.sp.gov.br",
+                        contato: "(11) 4512-7500"
+                    },
+                    juridico: {
+                        nome: "Secretaria de Assuntos Jurídicos",
+                        secretario: "Matheus Martins Sant' Anna",
+                        cargo: "Secretário de Assuntos Jurídicos",
+                        endereco: "Av. João Ramalho, 205 2° andar - Vila Noêmia",
+                        email: "juridico@maua.sp.gov.br",
+                        contato: "(11) 4512-7542"
+                    },
+                    meioambiente: {
+                        nome: "Secretaria de Meio Ambiente",
+                        secretario: "Reinaldo Soares de Araújo",
+                        cargo: "Secretário Municipal",
+                        endereco: "Av. João Ramalho, 205 3º Andar - Vila Noêmia",
+                        email: "meioambiente@maua.sp.gov.br",
+                        contato: "(11) 4512-7775"
+                    },
+                    obras: {
+                        nome: "Secretaria de Obras",
+                        secretario: "José Luiz Ribeiro de Macedo",
+                        cargo: "Secretário de Obras",
+                        endereco: "Av. João Ramalho, 205 3° andar - Vila Noêmia",
+                        email: "obras@maua.sp.gov.br",
+                        contato: "(11) 4512-7571"
+                    },
+                    planejamento: {
+                        nome: "Secretaria de Planejamento Urbano",
+                        secretario: "Francisco Esmeraldo Felipe Carneiro",
+                        cargo: "Secretário de Planejamento Urbano",
+                        endereco: "Av. João Ramalho, 205 3° andar - Vila Noêmia",
+                        email: "planejamento@maua.sp.gov.br",
+                        contato: "(11) 4512-7600"
+                    },
+                    mobilidade: {
+                        nome: "Secretaria de Mobilidade Urbana",
+                        secretario: "Caio de Araújo Carvalho",
+                        cargo: "Secretário Municipal",
+                        endereco: "Rua Vitorino Dell'Antonia, 271 - Vila Noêmia",
+                        email: "transito.smu@maua.sp.gov.br",
+                        contato: "(11) 4512-7788 / 4512-7493 (24h)"
+                    },
+                    defesacivil: {
+                        nome: "Secretaria de Proteção e Defesa Civil",
+                        secretario: "Sergio Moraes de Jesus",
+                        cargo: "Secretário Municipal",
+                        endereco: "Av. Pres. Castelo Branco, 1930 - Jardim Zaíra",
+                        email: "defesacivil@maua.sp.gov.br",
+                        contato: "(11) 4547-5690"
+                    },
+                    habitacao: {
+                        nome: "Secretaria de Habitação",
+                        secretario: "Fernando Rubinelli",
+                        cargo: "Secretário Municipal",
+                        endereco: "Av. João Ramalho, 205 - Vila Noêmia",
+                        email: "habitacao@maua.sp.gov.br",
+                        contato: "(11) 4512-7585"
+                    }
+                }
+            },
+            diadema: {
+                nome: "Diadema",
+                secretarias: {
+                    gabinete: {
+                        nome: "Gabinete do Prefeito",
+                        secretario: "Taka Yamauchi",
+                        cargo: "Prefeito",
+                        endereco: "Rua Almirante Barroso, 111 - Centro",
+                        email: "gabinete.prefeito@diadema.sp.gov.br",
+                        contato: "(11) 4057-7700"
+                    },
+                    juridico: {
+                        nome: "Secretaria de Assuntos Jurídicos",
+                        secretario: "Denise Ventrici",
+                        cargo: "Secretária de Assuntos Jurídicos",
+                        endereco: "Rua Amélia Eugenia, 488 - Centro",
+                        email: "juridico@diadema.sp.gov.br",
+                        contato: "(11) 4057-7405",
+                        complementar: {
+                            nome: "Carlos Pegoretti",
+                            cargo: "Procurador Geral do Município",
+                            email: "carlos.pegoretti@diadema.sp.gov.br",
+                            contato: "(11) 4057-7410"
+                        }
+                    },
+                    meioambiente: {
+                        nome: "Secretaria de Meio Ambiente",
+                        secretario: "Ricardo Sousa",
+                        cargo: "Secretário Municipal",
+                        endereco: "Rua Ipitá, 193 - Jardim Inamar",
+                        email: "meioambiente@diadema.sp.gov.br",
+                        contato: "(11) 4059-7600"
+                    },
+                    obras: {
+                        nome: "Secretaria de Obras",
+                        secretario: "Melissa Duaik",
+                        cargo: "Secretária de Obras",
+                        endereco: "Av. Doutor Ulysses Guimarães, 3269 - Vila Nogueira",
+                        email: "obras@diadema.sp.gov.br",
+                        contato: "(11) 4072-9222"
+                    },
+                    habitacao: {
+                        nome: "Secretaria de Habitação e Desenvolvimento Urbano",
+                        secretario: "Hugo Louro e Silva",
+                        cargo: "Secretário de Habitação e Desenvolvimento Urbano",
+                        endereco: "Av. João Ramalho, 205 3° andar - Vila Noêmia",
+                        email: "gabinete.shdu@diadema.sp.gov.br",
+                        contato: "(11) 4057-8017"
+                    },
+                    mobilidade: {
+                        nome: "Secretaria de Mobilidade e Transportes",
+                        secretario: "José Carlos Gonçalves",
+                        cargo: "Secretário Municipal",
+                        endereco: "Rua Marechal Floriano, 289 - Centro",
+                        email: "transportes@diadema.sp.gov.br",
+                        contato: "(11) 4075-8000"
+                    }
+                }
+            },
+            saocaetano: {
+                nome: "São Caetano do Sul",
+                secretarias: {
+                    gabinete: {
+                        nome: "Gabinete do Prefeito",
+                        secretario: "Tite Campanella",
+                        cargo: "Prefeito",
+                        endereco: "R. Eduardo Prado, 1",
+                        contato: "(11) 4233-7373",
+                        complementar: {
+                            nome: "Regina Maura Zetone",
+                            cargo: "Vice-Prefeita",
+                            endereco: "Avenida Goiás, 600 - 4º Andar",
+                            contato: "(11) 4224-4114 / 4203"
+                        }
+                    },
+                    juridico: {
+                        nome: "Secretaria de Assuntos Jurídicos",
+                        secretario: "Marcelo Mori",
+                        cargo: "Secretário de Assuntos Jurídicos",
+                        endereco: "Rua Eduardo Prado, 210",
+                        email: "sejur@saocaetanodosul.sp.gov.br",
+                        contato: "(11) 4233-7280"
+                    },
+                    obras: {
+                        nome: "Secretaria de Obras e Habitação (SEOHAB)",
+                        secretario: "Renato Rocha",
+                        cargo: "Secretária de Obras",
+                        endereco: "Avenida Goiás, 600",
+                        email: "seohab@saocaetanodosul.sp.gov.br",
+                        contato: "(11) 4233-7293"
+                    },
+                    mobilidade: {
+                        nome: "Secretaria de Mobilidade Urbana (SEMOB)",
+                        secretario: "Marcelo Ferreira de Souza",
+                        cargo: "Secretário Municipal",
+                        endereco: "Avenida Conselheiro Antônio Prado, 250",
+                        email: "semob@saocaetanodosul.sp.gov.br",
+                        contato: "(11) 4233-8920"
+                    },
+                    planejamento: {
+                        nome: "Secretaria Municipal de Planejamento (SEPLAN)",
+                        secretario: "José Carlos Gonçalves",
+                        cargo: "Secretário Municipal da SEPLAN",
+                        endereco: "Rua Eduardo Prado, 201",
+                        email: "seplan@saocaetanodosul.sp.gov.br",
+                        contato: "(11) 4233-7364"
+                    },
+                    servicosurbanos: {
+                        nome: "Secretaria de Serviços Urbanos (SESURB)",
+                        secretario: "Michel dos Santos",
+                        cargo: "Secretário Municipal da SESURB",
+                        endereco: "Rua Alegre, 497",
+                        contato: "(11) 4228-8932"
+                    }
+                }
+            }
+        };
+
+        function carregarSecretarias() {
+            const prefeituraSel = document.getElementById('prefeitura').value;
+            const secretariaSelect = document.getElementById('secretaria');
+            const resultado = document.getElementById('resultado');
+            
+            secretariaSelect.innerHTML = '<option value="">-- Selecione uma secretaria --</option>';
+            resultado.classList.remove('show');
+            
+            if (prefeituraSel) {
+                secretariaSelect.disabled = false;
+                const secretarias = dados[prefeituraSel].secretarias;
+                
+                for (let key in secretarias) {
+                    const option = document.createElement('option');
+                    option.value = key;
+                    option.textContent = secretarias[key].nome;
+                    secretariaSelect.appendChild(option);
+                }
+            } else {
+                secretariaSelect.disabled = true;
+            }
+        }
+
+        function formatarTelefone(telefone) {
+            return `<a href="tel:${telefone.replace(/[^0-9]/g, '')}">${telefone}</a>`;
+        }
+
+        function formatarEmail(email) {
+            return `<a href="mailto:${email}">${email}</a>`;
+        }
+
+        function exibirSecretario() {
+            const prefeituraSel = document.getElementById('prefeitura').value;
+            const secretariaSel = document.getElementById('secretaria').value;
+            const resultado = document.getElementById('resultado');
+            
+            if (prefeituraSel && secretariaSel) {
+                const info = dados[prefeituraSel].secretarias[secretariaSel];
+                
+                let html = `
+                    <h3>${info.nome}</h3>
+                    <div class="info-item">
+                        <span class="info-label">Nome:</span>
+                        <span class="info-value">${info.secretario}</span>
+                    </div>
+                    <div class="info-item">
+                        <span class="info-label">Cargo:</span>
+                        <span class="info-value">${info.cargo}</span>
+                    </div>
+                `;
+
+                if (info.endereco) {
+                    html += `
+                        <div class="info-item">
+                            <span class="info-label">Endereço:</span>
+                            <span class="info-value">${info.endereco}</span>
+                        </div>
+                    `;
+                }
+
+                if (info.email) {
+                    html += `
+                        <div class="info-item">
+                            <span class="info-label">E-mail:</span>
+                            <span class="info-value">${formatarEmail(info.email)}</span>
+                        </div>
+                    `;
+                }
+
+                if (info.contato) {
+                    html += `
+                        <div class="info-item">
+                            <span class="info-label">Contato:</span>
+                            <span class="info-value">${formatarTelefone(info.contato)}</span>
+                        </div>
+                    `;
+                }
+                
+                if (info.complementar) {
+                    html += `
+                        <div class="complementar">
+                            <h4>👤 Informações Complementares</h4>
+                            <div class="info-item">
+                                <span class="info-label">Nome:</span>
+                                <span class="info-value">${info.complementar.nome}</span>
+                            </div>
+                            <div class="info-item">
+                                <span class="info-label">Cargo:</span>
+                                <span class="info-value">${info.complementar.cargo}</span>
+                            </div>
+                    `;
+
+                    if (info.complementar.endereco) {
+                        html += `
+                            <div class="info-item">
+                                <span class="info-label">Endereço:</span>
+                                <span class="info-value">${info.complementar.endereco}</span>
+                            </div>
+                        `;
+                    }
+
+                    if (info.complementar.email) {
+                        html += `
+                            <div class="info-item">
+                                <span class="info-label">E-mail:</span>
+                                <span class="info-value">${formatarEmail(info.complementar.email)}</span>
+                            </div>
+                        `;
+                    }
+
+                    if (info.complementar.contato) {
+                        html += `
+                            <div class="info-item">
+                                <span class="info-label">Contato:</span>
+                                <span class="info-value">${formatarTelefone(info.complementar.contato)}</span>
+                            </div>
+                        `;
+                    }
+
+                    html += `</div>`;
+                }
+
+                if (info.complementar2) {
+                    html += `
+                        <div class="complementar">
+                            <h4>👤 Informações Adicionais</h4>
+                            <div class="info-item">
+                                <span class="info-label">Nome:</span>
+                                <span class="info-value">${info.complementar2.nome}</span>
+                            </div>
+                            <div class="info-item">
+                                <span class="info-label">Cargo:</span>
+                                <span class="info-value">${info.complementar2.cargo}</span>
+                            </div>
+                        </div>
+                    `;
+                }
+                
+                resultado.innerHTML = html;
+                resultado.classList.add('show');
+                
+                // Scroll suave até o resultado em dispositivos móveis
+                if (window.innerWidth < 768) {
+                    setTimeout(() => {
+                        resultado.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+                    }, 100);
+                }
+            } else {
+                resultado.classList.remove('show');
+            }
+        }
+
+        // Previne zoom duplo no iOS
+        let lastTouchEnd = 0;
+        document.addEventListener('touchend', function (event) {
+            const now = (new Date()).getTime();
+            if (now - lastTouchEnd <= 300) {
+                event.preventDefault();
+            }
+            lastTouchEnd = now;
+        }, false);
+    </script>
+</body>
+</html>
